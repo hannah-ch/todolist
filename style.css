@@ -8,7 +8,7 @@ li {
 }
 
 body {
-  background-color: salmon;
+  background-color: #ddcfc0;
   font-family: "Alata", sans-serif;
   color: #1103cc;
   display: flex;
@@ -49,7 +49,7 @@ div.wrapper .addTask input[type="text"] {
   font-family: inherit;
 }
 
-div.wrapper .addTask input[type="text"]:focus {
+div.wrapper .addTask input:focus {
   outline: 0;
 }
 
@@ -67,4 +67,10 @@ div.wrapper li {
   align-items: center;
   justify-content: space-around;
   padding: 20px 0px 20px 0;
+}
+
+div.wrapper li .contents.complete {
+  color: gray;
+  -webkit-text-decoration-line: line-through;
+  text-decoration-line: line-through;
 }

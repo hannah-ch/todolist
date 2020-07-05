@@ -16,16 +16,16 @@ function addComplete(content, checkbox) {
   }
 
   if (checkbox.type === "checkbox") {
-    if (completeOnOff === true) {
+    if (completeOnOff) {
       checkbox.checked = true;
-    } else if (completeOnOff === false) {
+    } else if (!completeOnOff) {
       checkbox.checked = false;
     }
   }
 }
 
 addButton.addEventListener("click", () => {
-  if (textinput.value === "") {
+  if (!textinput.value) {
     alert("정보를 입력하세요");
   } else {
     return;

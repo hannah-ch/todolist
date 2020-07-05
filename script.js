@@ -3,7 +3,7 @@ const content = document.querySelector(".contents");
 const li = document.querySelector("li");
 const checkbox = document.querySelector(".cb");
 const addButton = document.querySelector(".button");
-const textinput = document.querySelector("textinput");
+const textinput = document.querySelector(".textinput");
 let completeOnOff = false;
 
 function addComplete(content, checkbox) {
@@ -25,8 +25,10 @@ function addComplete(content, checkbox) {
 }
 
 addButton.addEventListener("click", () => {
-  if (!textinput) {
+  if (textinput.value === "") {
     alert("정보를 입력하세요");
+  } else {
+    return;
   }
 });
 

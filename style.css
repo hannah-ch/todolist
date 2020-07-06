@@ -69,7 +69,7 @@ div.wrapper li {
   padding: 20px 0px 20px 0;
 }
 
-div.wrapper li .contents.complete {
+div.wrapper li .complete {
   color: gray;
   -webkit-text-decoration-line: line-through;
   text-decoration-line: line-through;

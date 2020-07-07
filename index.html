@@ -1,50 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Todo List</title>
-        <link href="style.css" rel="stylesheet" />
-        <script
-            src="https://kit.fontawesome.com/e8a278aa48.js"
-            crossorigin="anonymous"
-        ></script>
-    </head>
 
-    <body>
-        <div class="wrapper">
-            <header class="date">3 July, Friday</header>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+    <link href="style.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/e8a278aa48.js" crossorigin="anonymous"></script>
+</head>
 
-            <section class="addTask">
-                <input type="text" class="textinput" />
-                <input
-                    type="button"
-                    value="add"
-                    onclick="eventList.addTodo()"
-                />
-            </section>
+<body>
+    <div class="wrapper">
+        <header class="date">3 July, Friday</header>
 
-            <section class="section">
-                <ul class="list">
-                    <li>
-                        <div class="check">
-                            <input
-                                type="checkbox"
-                                class="cb"
-                                onclick="addComplete()"
-                            />
-                        </div>
-                        <div class="contents" onclick="addComplete()">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing
-                            elit.
-                        </div>
-                        <div class="icons">
-                            <i class="far fa-trash-alt"></i>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-        </div>
-        <script src="script.js"></script>
-    </body>
+        <section class="addTask">
+            <input type="text" class="textinput" />
+            <input type="button" value="add" class="button" />
+        </section>
+
+        <section class=" section">
+            <ul class="list">
+                <li>
+                    <div class="check">
+                        <input type="checkbox" class="checkbox" />
+                    </div>
+                    <div class="contents">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing
+                        elit.
+                    </div>
+                    <div class="icons">
+                        <i class="far fa-trash-alt"></i>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+
 </html>

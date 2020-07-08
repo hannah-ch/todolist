@@ -5,6 +5,7 @@ const checkbox = document.querySelector(".checkbox");
 const $button = document.querySelector(".button");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
+const icon = document.querySelector('i');
 
 const createLi = document.createElement("li");
 
@@ -38,6 +39,13 @@ function contentClick(content) {
     }
 }
 
+function removeClick(item) {
+
+    let selectedLi = item.parentNode.parentNode;
+    selectedLi.classList.add('remove');
+    let removeItem = document.querySelector('.remove');
+    removeItem.parentNode.removeChild(removeItem);
+}
 
 
 
@@ -77,7 +85,7 @@ $ul.addEventListener('click', (e) => {
             contentClick(e.target)
             break;
         case "icon":
-            alert('%%%')
+            removeClick(e.target);
             break;
     }
 

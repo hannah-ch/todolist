@@ -1,46 +1,58 @@
-// const list = document.querySelector("ul");
 const $button = document.querySelector(".button");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
 
-let edit = document.getElementById('edit')
 
 function checkboxClick(checkbox) {
     if (checkbox.checked) {
         checkbox.parentElement.nextElementSibling.classList.add('complete')
-    }
+    } //클릭한 체크박스의 옆에 있는 div에 complete 클래스 추가
     else {
         checkbox.parentElement.nextElementSibling.classList.remove('complete')
-    }
+    } //클릭한 체크박스의 옆에 있는 div에 complete 클래스 제거
 }
 
 function contentClick(content) {
     content.classList.toggle('complete');
 
     if (!content.classList.contains('complete')) {
-        content.previousElementSibling.firstElementChild.checked = false;
+        content.previousElementSibling.firstElementChild.checked = false; //클릭한 div 옆에 있는 체크박스 체크 해제
     } else {
-        content.previousElementSibling.firstElementChild.checked = true;
+        content.previousElementSibling.firstElementChild.checked = true; //클릭한 div 옆에 있는 체크박스 체크
     }
 }
 
 function removeClick(item) {
 
-    let selectedLi = item.parentNode.parentNode;
-    selectedLi.classList.add('remove');
+    let selectedLi = item.parentNode.parentNode;    //선택한 아이콘이 있는 li 선택
+    selectedLi.classList.add('remove');             //클릭한 li에 remove 클래스 부여    
     let removeItem = document.querySelector('.remove');
-    removeItem.parentNode.removeChild(removeItem);
+    removeItem.parentNode.removeChild(removeItem); // remove 클래스로 선택하여 해당 li 제거
 }
 
 function editClick(item) {
-    let text = item.parentNode.previousElementSibling;
-    text.innerHTML = `<input type="text" id="textEdit"><input type="button" value="submit" id="editButton">`
+    let text = item.parentNode.previousElementSibling;  //선택한 아이콘이 있는 li 선택
+    let originalValue = text.innerHTML; //기존 value를 저장
 
-    let textEdit = document.getElementById('textEdit');
+
+    text.innerHTML = `<input type="text" id="textEdit"><input type="button" value="submit" id="editButton"><input type="button" value="cancel" id="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가
+
     let editButton = document.getElementById('editButton');
+    let cancelButton = document.getElementById('cancelButton');
 
-    editButton.addEventListener('click', (e) => {
-        text.innerHTML = e.target.previousElementSibling.value
+
+    cancelButton.addEventListener('click', () => { //cancel을 누를시
+        text.innerHTML = originalValue;             //처음에 저장해놨던 기존 value를 저장해서 반환
+    })
+
+    editButton.addEventListener('click', (e) => { //submit를 누를시
+        if (!e.target.previousElementSibling.value) {
+            alert('type something')
+            return;
+        } else {
+            text.innerHTML = e.target.previousElementSibling.value
+        } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
+
     })
 
 }

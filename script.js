@@ -2,6 +2,28 @@ const $addButton = document.querySelector(".button");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
 
+let todoList = ["Todo1", "Todo2", "Todo3"];
+
+
+for (let i = 0; i < todoList.length; i++) {
+    addTodo(todoList[i], i);
+
+}
+
+
+function addTodo(string, index) {
+
+    $ul.innerHTML += `<li data-index="${index}"><div class="check">
+    <input type="checkbox" class="checkbox" data-key="checkbox" />
+    </div>
+    <div class="contents" data-key="contents">${string}</div>
+    <div class="icons">
+    <i class="far fa-edit" data-key="icon_edit"></i>
+    <i class="far fa-trash-alt" data-key="icon_trash"></i>
+    </div></li>`;
+
+}
+
 
 
 function checkboxClick(checkbox) {
@@ -24,6 +46,10 @@ function removeClick(item) {
     //필요없는 코드  selectedLi.classList.add('remove');             //클릭한 li에 remove 클래스 부여    
     selectedLi.parentNode.removeChild(selectedLi); // remove 클래스로 선택하여 해당 li 제거
     //필요없는 코드 - 중복 (let removeItem = document.querySelector('.remove');)
+
+    selectedIndex = item.parentNode.parentNode.dataset.index;
+    todoList.splice(selectedIndex, 1);
+
 }
 
 function editClick(item) {
@@ -72,16 +98,11 @@ $addButton.addEventListener('click', () => {
         alert('type something');
     } else {
         let text = textinput.value;
-        $ul.innerHTML += `<li><div class="check">
-                        <input type="checkbox" class="checkbox" data-key="checkbox" />
-                        </div>
-                        <div class="contents" data-key="contents">${text}</div>
-                        <div class="icons">
-                        <i class="far fa-edit" data-key="icon_edit"></i>
-                        <i class="far fa-trash-alt" data-key="icon_trash"></i>
-                        </div></li>`
+        addTodo(text, todoList.length);
 
         textinput.value = "";
+
+        todoList.push(text);
 
     }
 });

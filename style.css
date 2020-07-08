@@ -27,8 +27,11 @@ input:focus{
   outline: none;
 }
 
-input[type=chcekbox]{
-  margin: 0;
+
+
+
+input[type="checkbox"]{
+  margin: 0px 10px 0px 2px;
 }
 
 * {
@@ -92,6 +95,10 @@ div.wrapper #editButton{
   border: none;
 }
 
+div.wrapper .addTask input[type="button"]:hover,
+div.wrapper #editButton:hover{
+  background-color: black;
+}
 
 div.wrapper .addTask input[type="button"] {
   background-color: #1103cc;
@@ -121,3 +128,7 @@ div.wrapper li .complete {
   text-decoration-line: line-through;
 }
 
+
+i:hover{
+  color: black;
+}

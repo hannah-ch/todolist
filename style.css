@@ -7,6 +7,14 @@ li {
   list-style-type: none;
 }
 
+/* .wrapper div{
+  border:1px solid pink;
+}
+
+.wrapper li{
+  border:1px solid magenta;
+}  */
+
 body {
   background-color: #ddcfc0;
   font-family: "Alata", sans-serif;
@@ -15,8 +23,24 @@ body {
   position: relative;
 }
 
+input:focus{
+  outline: none;
+}
+
+input[type=chcekbox]{
+  margin: 0;
+}
+
 * {
   box-sizing: border-box;
+}
+
+i:first-child{
+  margin-right: 12px;
+}
+
+i:last-child{
+  margin-right: 8px;
 }
 
 div.wrapper {
@@ -49,9 +73,25 @@ div.wrapper .addTask input[type="text"] {
   font-family: inherit;
 }
 
-div.wrapper .addTask input:focus {
-  outline: 0;
+div.wrapper #textEdit {
+  border:0;
+  border-bottom: 1px solid #1103cc;
+  padding: 5px;
+  width: 75%;
+  font-family: inherit;
+  font-size:0.8rem;
 }
+
+div.wrapper #editButton{
+  background-color: #1103cc;
+  padding: 5px 10px 5px 10px;
+  margin-left: 20px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: white;
+  border: none;
+}
+
 
 div.wrapper .addTask input[type="button"] {
   background-color: #1103cc;
@@ -63,10 +103,16 @@ div.wrapper .addTask input[type="button"] {
 }
 
 div.wrapper li {
+  width:85%;
+  margin:0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 20px 0px 20px 0;
+}
+
+div.wrapper li .contents{
+  flex-basis: 80%;
 }
 
 div.wrapper li .complete {
@@ -74,3 +120,4 @@ div.wrapper li .complete {
   -webkit-text-decoration-line: line-through;
   text-decoration-line: line-through;
 }
+

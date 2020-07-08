@@ -1,24 +1,9 @@
 // const list = document.querySelector("ul");
-const $content = document.querySelector(".contents"); //
-const $li = document.querySelector("li");
-const checkbox = document.querySelector(".checkbox");
 const $button = document.querySelector(".button");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
-const icon = document.querySelector('i');
 
-const createLi = document.createElement("li");
-
-//플래그는 최후의 보루로 쓰는게 좋다 
-//이 경우는 체크박스의 체크여부나 클래스 포함 여부로 대신할 수 있다 
-
-let todos = [];
-
-
-
-
-
-
+let edit = document.getElementById('edit')
 
 function checkboxClick(checkbox) {
     if (checkbox.checked) {
@@ -47,6 +32,18 @@ function removeClick(item) {
     removeItem.parentNode.removeChild(removeItem);
 }
 
+function editClick(item) {
+    let text = item.parentNode.previousElementSibling;
+    text.innerHTML = `<input type="text" id="textEdit"><input type="button" value="submit" id="editButton">`
+
+    let textEdit = document.getElementById('textEdit');
+    let editButton = document.getElementById('editButton');
+
+    editButton.addEventListener('click', (e) => {
+        text.innerHTML = e.target.previousElementSibling.value
+    })
+
+}
 
 
 $button.addEventListener('click', () => {
@@ -57,12 +54,13 @@ $button.addEventListener('click', () => {
         let text = textinput.value;
         let li = document.createElement('li');
         li.innerHTML += `<div class="check">
-                <input type="checkbox" class="checkbox" data-key="checkbox" />
-            </div>
-            <div class="contents" data-key="contents">${text}</div>
-            <div class="icons">
-                <i class="far fa-trash-alt" data-key="icon"></i>
-            </div>`
+                        <input type="checkbox" class="checkbox" data-key="checkbox" />
+                        </div>
+                        <div class="contents" data-key="contents">${text}</div>
+                        <div class="icons">
+                        <i class="far fa-edit" data-key="icon_edit"></i>
+                        <i class="far fa-trash-alt" data-key="icon_trash"></i>
+                        </div>`
 
         $ul.appendChild(li);
         textinput.value = "";
@@ -84,8 +82,11 @@ $ul.addEventListener('click', (e) => {
         case "contents":
             contentClick(e.target)
             break;
-        case "icon":
+        case "icon_trash":
             removeClick(e.target);
+            break;
+        case "icon_edit":
+            editClick(e.target);
             break;
     }
 

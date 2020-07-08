@@ -4,22 +4,17 @@ const $ul = document.querySelector("ul");
 
 
 function checkboxClick(checkbox) {
-    if (checkbox.checked) {
-        checkbox.parentElement.nextElementSibling.classList.add('complete')
-    } //클릭한 체크박스의 옆에 있는 div에 complete 클래스 추가
-    else {
-        checkbox.parentElement.nextElementSibling.classList.remove('complete')
-    } //클릭한 체크박스의 옆에 있는 div에 complete 클래스 제거
+
+    checkbox.parentElement.nextElementSibling.classList.toggle('complete')
+
+    //클릭한 체크박스의 옆에 있는 div에 complete 클래스 토글
+
 }
 
 function contentClick(content) {
     content.classList.toggle('complete');
-
-    if (!content.classList.contains('complete')) {
-        content.previousElementSibling.firstElementChild.checked = false; //클릭한 div 옆에 있는 체크박스 체크 해제
-    } else {
-        content.previousElementSibling.firstElementChild.checked = true; //클릭한 div 옆에 있는 체크박스 체크
-    }
+    content.previousElementSibling.firstElementChild.checked = !content.previousElementSibling.firstElementChild.checked;
+    //클릭한 div 옆에 있는 체크박스 체크 해제
 }
 
 function removeClick(item) {

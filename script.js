@@ -1,6 +1,7 @@
-const $button = document.querySelector(".button");
+const $addButton = document.querySelector(".button");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
+
 
 
 function checkboxClick(checkbox) {
@@ -20,9 +21,9 @@ function contentClick(content) {
 function removeClick(item) {
 
     let selectedLi = item.parentNode.parentNode;    //선택한 아이콘이 있는 li 선택
-    selectedLi.classList.add('remove');             //클릭한 li에 remove 클래스 부여    
-    let removeItem = document.querySelector('.remove');
-    removeItem.parentNode.removeChild(removeItem); // remove 클래스로 선택하여 해당 li 제거
+    //필요없는 코드  selectedLi.classList.add('remove');             //클릭한 li에 remove 클래스 부여    
+    selectedLi.parentNode.removeChild(selectedLi); // remove 클래스로 선택하여 해당 li 제거
+    //필요없는 코드 - 중복 (let removeItem = document.querySelector('.remove');)
 }
 
 function editClick(item) {
@@ -30,46 +31,56 @@ function editClick(item) {
     let originalValue = text.innerHTML; //기존 value를 저장
 
 
-    text.innerHTML = `<input type="text" id="textEdit"><input type="button" value="submit" id="editButton"><input type="button" value="cancel" id="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가
+    text.innerHTML = `<input type="text" id="textEdit" data-text=${originalValue}>
+                      <input type="button" value="submit" class="editButton" data-key="editButton">
+                      <input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
 
-    let editButton = document.getElementById('editButton');
-    let cancelButton = document.getElementById('cancelButton');
 
 
-    cancelButton.addEventListener('click', () => { //cancel을 누를시
-        text.innerHTML = originalValue;             //처음에 저장해놨던 기존 value를 저장해서 반환
-    })
 
-    editButton.addEventListener('click', (e) => { //submit를 누를시
-        if (!e.target.previousElementSibling.value) {
-            alert('type something')
-            return;
-        } else {
-            text.innerHTML = e.target.previousElementSibling.value
-        } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
+    //cancel버튼은 이제 배열이기 때문에 바로 eventlistener를 걸어준다
+    //이벤트 위임이 아니면 추가됐을 때 코드를 붙여줘야한다 
 
-    })
+
+
+}
+
+function clickEditButton(item) {
+
+    let text = item.parentNode.firstElementChild.value;
+    if (!text) {
+        alert('type something')
+        return;
+    } else {
+        item.parentElement.innerHTML = text;
+    } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
+
+
+}
+
+function clickCancelButton(item) {
+    let text = item.parentNode.firstElementChild.value;
+    text.innerHTML = text.dataset.text  //처음에 저장해놨던 기존 value를 저장해서 반환
 
 }
 
 
-$button.addEventListener('click', () => {
+
+$addButton.addEventListener('click', () => {
 
     if (!textinput.value) {
         alert('type something');
     } else {
         let text = textinput.value;
-        let li = document.createElement('li');
-        li.innerHTML += `<div class="check">
+        $ul.innerHTML += `<li><div class="check">
                         <input type="checkbox" class="checkbox" data-key="checkbox" />
                         </div>
                         <div class="contents" data-key="contents">${text}</div>
                         <div class="icons">
                         <i class="far fa-edit" data-key="icon_edit"></i>
                         <i class="far fa-trash-alt" data-key="icon_trash"></i>
-                        </div>`
+                        </div></li>`
 
-        $ul.appendChild(li);
         textinput.value = "";
 
     }
@@ -94,6 +105,12 @@ $ul.addEventListener('click', (e) => {
             break;
         case "icon_edit":
             editClick(e.target);
+            break;
+        case "editButton":
+            clickEditButton(e.target);
+            break;
+        case "cancelButton":
+            clickCancelButton(e.target);
             break;
     }
 

@@ -3,7 +3,7 @@ const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
 const content = document.querySelector('.contents')
 
-var todoList = {
+const todoList = {
 
     todos: [
         {
@@ -37,41 +37,42 @@ var todoList = {
 
     completeTodo: function (index) {
         this.todos[index].completed = !this.todos[index].completed;
+    },
+
+
+    displayTodo: function () {
+        $ul.innerHTML = "";
+        for (let i = 0; i < this.todos.length; i++) {
+
+            let todo = this.todos[i];
+            let className = 'completed'
+            let checked = 'checked'
+
+            if (todo.completed === false) {
+                className = "";
+                checked = "";
+
+            }
+
+            $ul.innerHTML += `<li data-index="${i}"><div class="checkboxDiv">
+            <input type="checkbox" class="checkbox" data-key="checkbox" ${checked}/></div>
+            <div class="contents ${className}" data-key="contents">
+            ${todo.todoText}</div>
+            <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
+            <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
+            </li>`
+
+
+
+        }
     }
+
 
 };
 
 
 
-function displayTodo() {
-    $ul.innerHTML = "";
-    for (let i = 0; i < todoList.todos.length; i++) {
-
-        let todo = todoList.todos[i];
-
-        if (todo.completed === true) {
-            $ul.innerHTML += `<li data-index="${i}"><div class="checkboxDiv">
-            <input type="checkbox" class="checkbox" data-key="checkbox" checked/></div>
-            <div class="contents completed" data-key="contents">
-            ${todo.todoText}</div>
-            <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
-            <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
-            </li>`;
-        } else {
-            $ul.innerHTML += `<li data-index="${i}"><div class="checkboxDiv">
-            <input type="checkbox" class="checkbox" data-key="checkbox"/></div><div class="contents" data-key="contents">
-            ${todo.todoText}</div>
-            <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
-            <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
-            </li>`;
-        }
-
-
-
-    }
-}
-
-displayTodo();
+todoList.displayTodo();
 
 
 let eventList = {

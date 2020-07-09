@@ -1,7 +1,6 @@
 const $addButton = document.querySelector(".addButton");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
-const content = document.querySelector('.contents')
 
 const todoList = {
 
@@ -42,6 +41,8 @@ const todoList = {
 
     displayTodo: function () {
         $ul.innerHTML = "";
+        let innerContents = '';
+
         for (let i = 0; i < this.todos.length; i++) {
 
             let todo = this.todos[i];
@@ -51,20 +52,24 @@ const todoList = {
             if (todo.completed === false) {
                 className = "";
                 checked = "";
-
             }
 
-            $ul.innerHTML += `<li data-index="${i}"><div class="checkboxDiv">
-            <input type="checkbox" class="checkbox" data-key="checkbox" ${checked}/></div>
-            <div class="contents ${className}" data-key="contents">
-            ${todo.todoText}</div>
-            <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
-            <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
-            </li>`
+            innerContents += `<li data-index="${i}"><div class="checkboxDiv">
+                             <input type="checkbox" class="checkbox" data-key="checkbox" ${checked}/></div>
+                             <div class="contents ${className}" data-key="contents">
+                             ${todo.todoText}</div>
+                             <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
+                             <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
+                             </li>`
 
-
+            //innerHTML 명령 자체가 다 덮어쓰기 때문에 += 기호랑 함꼐 쓰면 추가가 되는 것이 아니라,
+            //실제로는 초기화 후에 내용이 추가되는 것이다 
+            //브라우저의 부담을 가중시키지 않기 위해서 텍스트 컨텐츠를 먼저 만들고 변수에 넣어서 마지막에 변수만 넣어준다
 
         }
+
+        $ul.innerHTML = innerContents;
+
     }
 
 
@@ -102,7 +107,7 @@ let eventList = {
         let selectedIndex = icon.parentElement.parentElement.dataset.index;
 
         todoList.deleteTodo(selectedIndex);
-        displayTodo();
+        todoList.displayTodo();
 
 
     },
@@ -114,9 +119,7 @@ let eventList = {
         //icon.previousElementSibling.children[1].innerText //기존 value를 저장
 
 
-        text.innerHTML = `<input type="text" id="textEdit" data-text=${originalText}>
-                      <input type="button" value="submit" class="submitButton" data-key="submitButton">
-                      <input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
+        text.innerHTML = `<input type="text" id="textEdit" data-text=${originalText}><input type="button" value="submit" class="submitButton" data-key="submitButton"><input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
 
 
 
@@ -138,7 +141,7 @@ let eventList = {
             return;
         } else {
             todoList.changeTodo(dataIndex, text);
-            displayTodo();
+            todoList.displayTodo();
         } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
 
 
@@ -147,7 +150,7 @@ let eventList = {
     clickCancelButton: function (item) {
         let text = item.parentNode.firstElementChild.value;
         text.innerHTML = item.previousElementSibling.previousElementSibling.dataset.text  //처음에 저장해놨던 기존 value를 저장해서 반환
-        displayTodo();
+        todoList.displayTodo();
     }
 
 
@@ -160,7 +163,7 @@ $addButton.addEventListener('click', () => {
     } else {
         let text = textinput.value;
         todoList.addTodo(text);
-        displayTodo();
+        todoList.displayTodo();
 
         textinput.value = "";
 

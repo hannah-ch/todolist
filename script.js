@@ -1,118 +1,156 @@
-const $addButton = document.querySelector(".button");
+const $addButton = document.querySelector(".addButton");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
 const content = document.querySelector('.contents')
 
-let todoList = [
-    {
-        text: "Todo1",
-        complete: false
+var todoList = {
+
+    todos: [
+        {
+            todoText: "Todo1",
+            completed: false
+        },
+        {
+            todoText: "Todo2",
+            completed: true
+        },
+        {
+            todoText: "Todo3",
+            completed: false
+        }],
+
+
+    addTodo: function (newTodoText) {
+        this.todos.push({
+            todoText: newTodoText,
+            completed: false
+        });
     },
-    {
-        text: "Todo2",
-        complete: true
+
+    changeTodo: function (index, newTodoText) {
+        this.todos[index].todoText = newTodoText;
     },
-    {
-        text: "Todo3",
-        complete: false
-    }
-]
 
+    deleteTodo: function (index) {
+        this.todos.splice(index, 1);
+    },
 
-
-
-for (let i = 0; i < todoList.length; i++) {
-    addTodo(todoList[i].text, i);
-
-}
-
-
-function addTodo(string, index, status) {
-
-    var className = "";
-
-    if (status) {
-        contents.classList.add('complete') // 클래스를 어떻게든 넣어라
+    completeTodo: function (index) {
+        this.todos[index].completed = !this.todos[index].completed;
     }
 
-    $ul.innerHTML += `<li data-index="${index}"><div class="check">
-    <input type="checkbox" class="checkbox" data-key="checkbox" />
-    </div>
-    <div class="contents" data-key="contents">${string}</div>
-    <div class="icons">
-    <i class="far fa-edit" data-key="icon_edit"></i>
-    <i class="far fa-trash-alt" data-key="icon_trash"></i>
-    </div></li>`;
+};
 
+
+
+function displayTodo() {
+    $ul.innerHTML = "";
+    for (let i = 0; i < todoList.todos.length; i++) {
+
+        let todo = todoList.todos[i];
+
+        if (todo.completed === true) {
+            $ul.innerHTML += `<li data-index="${i}"><div class="checkboxDiv">
+            <input type="checkbox" class="checkbox" data-key="checkbox" checked/></div>
+            <div class="contents completed" data-key="contents">
+            ${todo.todoText}</div>
+            <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
+            <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
+            </li>`;
+        } else {
+            $ul.innerHTML += `<li data-index="${i}"><div class="checkboxDiv">
+            <input type="checkbox" class="checkbox" data-key="checkbox"/></div><div class="contents" data-key="contents">
+            ${todo.todoText}</div>
+            <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
+            <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
+            </li>`;
+        }
+
+
+
+    }
 }
 
+displayTodo();
 
 
-function checkboxClick(checkbox) {
+let eventList = {
 
-    checkbox.parentElement.nextElementSibling.classList.toggle('complete')
+    checkboxClick: function (checkbox) {
 
-    //클릭한 체크박스의 옆에 있는 div에 complete 클래스 토글
+        let selectedIndex = checkbox.parentElement.parentElement.dataset.index;
+        checkbox.parentElement.nextElementSibling.classList.toggle('completed');
+        todoList.completeTodo(selectedIndex);
+        //클릭한 체크박스의 옆에 있는 div에 complete 클래스 토글
 
-}
+    },
 
-function contentClick(content) {
-    content.classList.toggle('complete');
-    content.previousElementSibling.firstElementChild.checked = !content.previousElementSibling.firstElementChild.checked;
-    //클릭한 div 옆에 있는 체크박스 체크 해제
-}
+    contentClick: function (content) {
 
-function removeClick(item) {
+        let selectedIndex = content.parentElement.dataset.index;
+        content.classList.toggle('completed');
+        content.previousSibling.firstElementChild.checked = !content.previousSibling.firstElementChild.checked;
+        todoList.completeTodo(selectedIndex);
+        //클릭한 div 옆에 있는 체크박스 체크 해제
+    },
 
-    let selectedLi = item.parentNode.parentNode;    //선택한 아이콘이 있는 li 선택
-    //필요없는 코드  selectedLi.classList.add('remove');             //클릭한 li에 remove 클래스 부여    
-    selectedLi.parentNode.removeChild(selectedLi); // remove 클래스로 선택하여 해당 li 제거
-    //필요없는 코드 - 중복 (let removeItem = document.querySelector('.remove');)
+    removeClick: function (icon) {
 
-    selectedIndex = item.parentNode.parentNode.dataset.index;
-    todoList.splice(selectedIndex, 1);
+        let selectedLi = icon.parentElement.parentElement;
+        selectedLi.parentElement.removeChild(selectedLi);
+        let selectedIndex = icon.parentElement.parentElement.dataset.index;
 
-}
-
-function editClick(item) {
-    let text = item.parentNode.previousElementSibling;  //선택한 아이콘이 있는 li 선택
-    let originalValue = text.innerHTML; //기존 value를 저장
+        todoList.deleteTodo(selectedIndex);
+        displayTodo();
 
 
-    text.innerHTML = `<input type="text" id="textEdit" data-text=${originalValue}>
-                      <input type="button" value="submit" class="editButton" data-key="editButton">
+    },
+
+    editClick: function (icon) {
+
+        text = icon.parentElement.parentElement.children[1];
+        let originalText = text.innerText;
+        //icon.previousElementSibling.children[1].innerText //기존 value를 저장
+
+
+        text.innerHTML = `<input type="text" id="textEdit" data-text=${originalText}>
+                      <input type="button" value="submit" class="submitButton" data-key="submitButton">
                       <input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
 
 
 
 
-    //cancel버튼은 이제 배열이기 때문에 바로 eventlistener를 걸어준다
-    //이벤트 위임이 아니면 추가됐을 때 코드를 붙여줘야한다 
+        //cancel버튼은 이제 배열이기 때문에 바로 eventlistener를 걸어준다
+        //이벤트 위임이 아니면 추가됐을 때 코드를 붙여줘야한다 
 
 
 
-}
+    },
 
-function clickEditButton(item) {
+    clickSubmitButton: function (item) {
 
-    let text = item.parentNode.firstElementChild.value;
-    if (!text) {
-        alert('type something')
-        return;
-    } else {
-        item.parentElement.innerHTML = text;
-    } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
+        let text = item.previousElementSibling.value;
+        let dataIndex = item.parentElement.parentElement.dataset.index;
 
-
-}
-
-function clickCancelButton(item) {
-    let text = item.parentNode.firstElementChild.value;
-    text.innerHTML = text.dataset.text  //처음에 저장해놨던 기존 value를 저장해서 반환
-
-}
+        if (!text) {
+            alert('type something')
+            return;
+        } else {
+            todoList.changeTodo(dataIndex, text);
+            displayTodo();
+        } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
 
 
+    },
+
+    clickCancelButton: function (item) {
+        let text = item.parentNode.firstElementChild.value;
+        text.innerHTML = item.previousElementSibling.previousElementSibling.dataset.text  //처음에 저장해놨던 기존 value를 저장해서 반환
+        displayTodo();
+    }
+
+
+};
 
 $addButton.addEventListener('click', () => {
 
@@ -120,11 +158,10 @@ $addButton.addEventListener('click', () => {
         alert('type something');
     } else {
         let text = textinput.value;
-        addTodo(text, todoList.length);
+        todoList.addTodo(text);
+        displayTodo();
 
         textinput.value = "";
-
-        todoList.push({ text: text, complete: false });
 
     }
 });
@@ -138,22 +175,22 @@ $addButton.addEventListener('click', () => {
 $ul.addEventListener('click', (e) => {
     switch (e.target.dataset.key) {
         case "checkbox":
-            checkboxClick(e.target)
+            eventList.checkboxClick(e.target)
             break;
         case "contents":
-            contentClick(e.target)
+            eventList.contentClick(e.target)
             break;
         case "icon_trash":
-            removeClick(e.target);
+            eventList.removeClick(e.target);
             break;
         case "icon_edit":
-            editClick(e.target);
+            eventList.editClick(e.target);
             break;
-        case "editButton":
-            clickEditButton(e.target);
+        case "submitButton":
+            eventList.clickSubmitButton(e.target);
             break;
         case "cancelButton":
-            clickCancelButton(e.target);
+            eventList.clickCancelButton(e.target);
             break;
     }
 

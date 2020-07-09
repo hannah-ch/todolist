@@ -1,19 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=Alata&display=swap");
-
+ 
 ul,
+p,
 li {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
 
-/* .wrapper div{
-  border:1px solid pink;
+div .completed {
+  color: gray;
+  -webkit-text-decoration-line: line-through;
+  text-decoration-line: line-through;
+}
+/* 
+.wrapper li{
+  border:1px solid yellowgreen;
 }
 
-.wrapper li{
+.wrapper li div{
   border:1px solid magenta;
-}  */
+} */
+
 
 body {
   background-color: #ddcfc0;
@@ -120,17 +128,13 @@ div.wrapper li {
   padding: 20px 0px 20px 0;
 }
 
+
 div.wrapper li .contents{
-  flex-basis: 82%;
+  flex-basis: 60%;
 }
 
-div.wrapper li .complete {
-  color: gray;
-  -webkit-text-decoration-line: line-through;
-  text-decoration-line: line-through;
-}
 
 
 i:hover{
   color: black;
-}
+} 

@@ -37,7 +37,6 @@ input:focus{
 
 
 
-
 input[type="checkbox"]{
   margin: 0px 5px 0px 0px;
 }
@@ -93,30 +92,27 @@ div.wrapper #textEdit {
   font-size:0.8rem;
 }
 
-div.wrapper #editButton,
-div.wrapper #cancelButton{
-  background-color: #1103cc;
-  padding: 5px 10px 5px 10px;
-  margin-left: 5px;
-  font-family: inherit;
-  font-size: 0.8rem;
-  color: white;
-  border: none;
-}
 
-div.wrapper .addTask input[type="button"]:hover,
-div.wrapper #editButton:hover
-div.wrapper #cancelButton:hover{
+input[type="button"]:hover{
   background-color: black;
 }
 
-div.wrapper .addTask input[type="button"] {
+input[type="button"] {
   background-color: #1103cc;
   padding: 10px 20px 10px 20px;
   margin-left: 20px;
   font-family: inherit;
   color: white;
   border: none;
+}
+
+
+input[type="button"].submitButton,
+input[type="button"].cancelButton{
+  padding: 5px 10px 5px 10px;
+  margin-left: 5px;
+  font-family: inherit;
+  font-size: 0.8rem;
 }
 
 div.wrapper li {
@@ -130,7 +126,7 @@ div.wrapper li {
 
 
 div.wrapper li .contents{
-  flex-basis: 60%;
+  flex-basis: 80%;
 }
 
 

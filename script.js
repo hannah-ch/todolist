@@ -1,17 +1,39 @@
 const $addButton = document.querySelector(".button");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
+const content = document.querySelector('.contents')
 
-let todoList = ["Todo1", "Todo2", "Todo3"];
+let todoList = [
+    {
+        text: "Todo1",
+        complete: false
+    },
+    {
+        text: "Todo2",
+        complete: true
+    },
+    {
+        text: "Todo3",
+        complete: false
+    }
+]
+
+
 
 
 for (let i = 0; i < todoList.length; i++) {
-    addTodo(todoList[i], i);
+    addTodo(todoList[i].text, i);
 
 }
 
 
-function addTodo(string, index) {
+function addTodo(string, index, status) {
+
+    var className = "";
+
+    if (status) {
+        contents.classList.add('complete') // 클래스를 어떻게든 넣어라
+    }
 
     $ul.innerHTML += `<li data-index="${index}"><div class="check">
     <input type="checkbox" class="checkbox" data-key="checkbox" />
@@ -102,7 +124,7 @@ $addButton.addEventListener('click', () => {
 
         textinput.value = "";
 
-        todoList.push(text);
+        todoList.push({ text: text, complete: false });
 
     }
 });

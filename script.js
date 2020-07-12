@@ -2,6 +2,7 @@ const $addButton = document.querySelector(".addButton");
 const textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
 
+
 const todoList = {
 
     todos: [
@@ -169,8 +170,6 @@ $addButton.addEventListener('click', () => {
 
     }
 });
-
-
 
 //ul에 이벤트 위임방식으로 switch 구문에 넣을 것
 // 함수 수정하고 함수를 만들 필요도 없다 

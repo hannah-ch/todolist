@@ -71,17 +71,8 @@ const todoList = {
 
         $ul.innerHTML = innerContents;
 
-    }
+    },
 
-
-};
-
-
-
-todoList.displayTodo();
-
-
-let eventList = {
 
     checkboxClick: function (checkbox) {
 
@@ -155,7 +146,13 @@ let eventList = {
     }
 
 
+
 };
+
+
+
+todoList.displayTodo();
+
 
 $addButton.addEventListener('click', () => {
 
@@ -178,22 +175,22 @@ $addButton.addEventListener('click', () => {
 $ul.addEventListener('click', (e) => {
     switch (e.target.dataset.key) {
         case "checkbox":
-            eventList.checkboxClick(e.target)
+            todoList.checkboxClick(e.target)
             break;
         case "contents":
-            eventList.contentClick(e.target)
+            todoList.contentClick(e.target)
             break;
         case "icon_trash":
-            eventList.removeClick(e.target);
+            todoList.removeClick(e.target);
             break;
         case "icon_edit":
-            eventList.editClick(e.target);
+            todoList.editClick(e.target);
             break;
         case "submitButton":
-            eventList.clickSubmitButton(e.target);
+            todoList.clickSubmitButton(e.target);
             break;
         case "cancelButton":
-            eventList.clickCancelButton(e.target);
+            todoList.clickCancelButton(e.target);
             break;
     }
 

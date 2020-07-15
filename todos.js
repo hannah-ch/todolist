@@ -47,7 +47,7 @@ const todoList = {
 
     changeTodo: function (index, newTodoText) {
         //this.todos[index].todoText = newTodoText;
-        var id = index;
+        let id = index;
 
 
         $.ajax({
@@ -59,7 +59,7 @@ const todoList = {
                 //completed: false
             },
             success: function (object) {
-                todoList.todos[id].todoText = object.title;
+                todoList.todos[id - 1].title = object.title;  // 객체는 없는 프로퍼티를 호출하면, 프로퍼티 자체를 만든다
                 //console.log(todoList.todos[id].todoText)
                 todoList.displayTodo();
             }
@@ -74,9 +74,9 @@ const todoList = {
 
         $.ajax({
             url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
-            type: 'delete',
-            success: function (object) {
-                todoList.todos[id] = object;
+            type: 'delete', //이미 여기까지의 명령으로 서버에서의 데이터는 삭제되었으므로, todos의 배열[해당인덱스]만 삭제해주면 된다 
+            success: function () {
+                todoList.todos.splice(id - 1, 1);
                 todoList.displayTodo();
             }
         })
@@ -134,19 +134,20 @@ const todoList = {
 
         let selectedIndex = content.parentElement.dataset.index;
         content.classList.toggle('completed');
-        content.previousSibling.firstElementChild.checked = !content.previousSibling.firstElementChild.checked;
+
+        let checkbox = content.previousElementSibling.firstElementChild;
+        checkbox.checked = !checkbox.checked;
         todoList.completeTodo(selectedIndex);
         //클릭한 div 옆에 있는 체크박스 체크 해제
     },
 
     removeClick: function (icon) {
 
-        let selectedLi = icon.parentElement.parentElement;
-        selectedLi.parentElement.removeChild(selectedLi);
+        // let selectedLi = icon.parentElement.parentElement;
+        // selectedLi.parentElement.removeChild(selectedLi);
         let selectedIndex = icon.parentElement.parentElement.dataset.index;
 
         todoList.deleteTodo(selectedIndex);
-        todoList.displayTodo();
 
 
     },
@@ -175,7 +176,7 @@ const todoList = {
             alert('type something')
             return;
         } else {
-            todoList.changeTodo(dataIndex, text);
+            todoList.changeTodo(dataIndex, text); //서버에서 데이터를 가지고 올 때 배열이 아니므로, 배열에 데이터를 할당할 때 주의한다 
         } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
     },
 

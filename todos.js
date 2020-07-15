@@ -1,34 +1,88 @@
-const $addButton = document.querySelector(".addButton");
-const textinput = document.querySelector(".textinput");
-const $ul = document.querySelector("ul");
 
 
 const todoList = {
 
-    todos: [
-        {
-            todoText: "Todo1",
-            completed: false
-        },
-        {
-            todoText: "Todo2",
-            completed: true
-        },
-        {
-            todoText: "Todo3",
-            completed: false
-        }],
+    getData: function () {
+        $.ajax({
+            url: 'https://jsonplaceholder.typicode.com/todos?userId=1', //
+            type: 'get',
+            success: function (result) {
+                todoList.todos = result.splice(0, 5)
+                todoList.displayTodo();  //동기 방식
+            },
+            error: function (result) { //주소를 잘못쳤거나, 서버와의 통신장애로 통신이 잘 안됐을때
+
+            }
+        })
+    },
+
+
+
+
+    todos: [],
+    // {
+    //     todoText: "Todo1",
+    //     completed: false
+    // },
+    // {
+    //     todoText: "Todo2",
+    //     completed: true
+    // },
+    // {
+    //     todoText: "Todo3",
+    //     completed: false
+    // }],
 
 
     addTodo: function (newTodoText) {
-        this.todos.push({
-            todoText: newTodoText,
-            completed: false
-        });
+        //서버와의 통신이 성공했을때만 push가 되도록
+
+        $.ajax({
+            url: 'https://jsonplaceholder.typicode.com/todos?userId=1', //
+            type: 'post',
+            data: {
+                title: newTodoText,
+                completed: false
+            },
+            success: function (object) {
+                todoList.todos.push(object);
+                todoList.displayTodo()
+            }
+        })
     },
 
+
+    /* 수정할 때는 
+   var id = //클릭한 요소의 아이디
+   삭제할 때 가져와봤던 아이디
+   수정을 할 때는 새로운 값을 서버에게 준다
+
+   이것도 똑같이 객체를 리턴하므로, 똑같이 배열에 넣어준다
+
+
+*/
+
+
     changeTodo: function (index, newTodoText) {
-        this.todos[index].todoText = newTodoText;
+        //this.todos[index].todoText = newTodoText;
+        var id = index;
+
+        $.ajax({
+            url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
+            type: 'post',
+            data: {
+                id: id,
+                title: newTodoText
+                //completed: false
+            },
+            success: function (object) {
+                todoList.todos[id] = object;
+                todoList.displayTodo()
+            }
+        })
+
+
+
     },
 
     deleteTodo: function (index) {
@@ -44,6 +98,12 @@ const todoList = {
         $ul.innerHTML = "";
         let innerContents = '';
 
+
+
+
+
+
+
         for (let i = 0; i < this.todos.length; i++) {
 
             let todo = this.todos[i];
@@ -55,10 +115,10 @@ const todoList = {
                 checked = "";
             }
 
-            innerContents += `<li data-index="${i}"><div class="checkboxDiv">
+            innerContents += `<li data-index="${todo.id}"><div class="checkboxDiv">
                              <input type="checkbox" class="checkbox" data-key="checkbox" ${checked}/></div>
                              <div class="contents ${className}" data-key="contents">
-                             ${todo.todoText}</div>
+                             ${todo.title}</div>
                              <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
                              <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
                              </li>`
@@ -111,7 +171,9 @@ const todoList = {
         //icon.previousElementSibling.children[1].innerText //기존 value를 저장
 
 
-        text.innerHTML = `<input type="text" id="textEdit" data-text=${originalText}><input type="button" value="submit" class="submitButton" data-key="submitButton"><input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
+        text.innerHTML = `<input type="text" id="textEdit" data-text=${originalText}>
+        <input type="button" value="submit" class="submitButton" data-key="submitButton">
+        <input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
 
 
 
@@ -127,6 +189,31 @@ const todoList = {
 
         let text = item.previousElementSibling.value;
         let dataIndex = item.parentElement.parentElement.dataset.index;
+
+
+
+        // function changeTodo(index, newTodoText) {
+        //     //this.todos[index].todoText = newTodoText;
+        //     //var id = this.parentElement.parentElement.dataset.index;
+        //     console.log(dataIndex)
+        //     // $.ajax({
+        //     //     url: `https://jsonplaceholder.typicode.com/todos/${index}`, //
+        //     //     type: 'post',
+        //     //     data: {
+        //     //         id: index,
+        //     //         title: newTodoText
+        //     //         //completed: false
+        //     //     },
+        //     //     success: function (object) {
+        //     //         todoList.todos[index].title = object.title;
+        //     //         todoList.displayTodo()
+        //     //     }
+        //     // })
+
+
+
+        // }
+
 
         if (!text) {
             alert('type something')
@@ -149,51 +236,3 @@ const todoList = {
 
 };
 
-
-
-todoList.displayTodo();
-
-
-$addButton.addEventListener('click', () => {
-
-    if (!textinput.value) {
-        alert('type something');
-    } else {
-        let text = textinput.value;
-        todoList.addTodo(text);
-        todoList.displayTodo();
-
-        textinput.value = "";
-
-    }
-});
-
-//ul에 이벤트 위임방식으로 switch 구문에 넣을 것
-// 함수 수정하고 함수를 만들 필요도 없다 
-
-
-$ul.addEventListener('click', (e) => {
-    switch (e.target.dataset.key) {
-        case "checkbox":
-            todoList.checkboxClick(e.target)
-            break;
-        case "contents":
-            todoList.contentClick(e.target)
-            break;
-        case "icon_trash":
-            todoList.removeClick(e.target);
-            break;
-        case "icon_edit":
-            todoList.editClick(e.target);
-            break;
-        case "submitButton":
-            todoList.clickSubmitButton(e.target);
-            break;
-        case "cancelButton":
-            todoList.clickCancelButton(e.target);
-            break;
-    }
-
-
-
-})

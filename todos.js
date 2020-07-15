@@ -16,23 +16,7 @@ const todoList = {
         })
     },
 
-
-
-
     todos: [],
-    // {
-    //     todoText: "Todo1",
-    //     completed: false
-    // },
-    // {
-    //     todoText: "Todo2",
-    //     completed: true
-    // },
-    // {
-    //     todoText: "Todo3",
-    //     completed: false
-    // }],
-
 
     addTodo: function (newTodoText) {
         //서버와의 통신이 성공했을때만 push가 되도록
@@ -46,7 +30,7 @@ const todoList = {
             },
             success: function (object) {
                 todoList.todos.push(object);
-                todoList.displayTodo()
+                todoList.displayTodo();
             }
         })
     },
@@ -58,35 +42,45 @@ const todoList = {
    수정을 할 때는 새로운 값을 서버에게 준다
 
    이것도 똑같이 객체를 리턴하므로, 똑같이 배열에 넣어준다
-
-
-*/
+    */
 
 
     changeTodo: function (index, newTodoText) {
         //this.todos[index].todoText = newTodoText;
         var id = index;
 
+
         $.ajax({
             url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
-            type: 'post',
+            type: 'put',
             data: {
                 id: id,
                 title: newTodoText
                 //completed: false
             },
             success: function (object) {
-                todoList.todos[id] = object;
-                todoList.displayTodo()
+                todoList.todos[id].todoText = object.title;
+                //console.log(todoList.todos[id].todoText)
+                todoList.displayTodo();
             }
         })
-
-
 
     },
 
     deleteTodo: function (index) {
-        this.todos.splice(index, 1);
+        //this.todos.splice(index, 1);
+
+        var id = index;
+
+        $.ajax({
+            url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
+            type: 'delete',
+            success: function (object) {
+                todoList.todos[id] = object;
+                todoList.displayTodo();
+            }
+        })
+
     },
 
     completeTodo: function (index) {
@@ -97,12 +91,6 @@ const todoList = {
     displayTodo: function () {
         $ul.innerHTML = "";
         let innerContents = '';
-
-
-
-
-
-
 
         for (let i = 0; i < this.todos.length; i++) {
 
@@ -126,7 +114,6 @@ const todoList = {
             //innerHTML 명령 자체가 다 덮어쓰기 때문에 += 기호랑 함꼐 쓰면 추가가 되는 것이 아니라,
             //실제로는 초기화 후에 내용이 추가되는 것이다 
             //브라우저의 부담을 가중시키지 않기 위해서 텍스트 컨텐츠를 먼저 만들고 변수에 넣어서 마지막에 변수만 넣어준다
-
         }
 
         $ul.innerHTML = innerContents;
@@ -175,13 +162,8 @@ const todoList = {
         <input type="button" value="submit" class="submitButton" data-key="submitButton">
         <input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
 
-
-
-
         //cancel버튼은 이제 배열이기 때문에 바로 eventlistener를 걸어준다
         //이벤트 위임이 아니면 추가됐을 때 코드를 붙여줘야한다 
-
-
 
     },
 
@@ -189,41 +171,12 @@ const todoList = {
 
         let text = item.previousElementSibling.value;
         let dataIndex = item.parentElement.parentElement.dataset.index;
-
-
-
-        // function changeTodo(index, newTodoText) {
-        //     //this.todos[index].todoText = newTodoText;
-        //     //var id = this.parentElement.parentElement.dataset.index;
-        //     console.log(dataIndex)
-        //     // $.ajax({
-        //     //     url: `https://jsonplaceholder.typicode.com/todos/${index}`, //
-        //     //     type: 'post',
-        //     //     data: {
-        //     //         id: index,
-        //     //         title: newTodoText
-        //     //         //completed: false
-        //     //     },
-        //     //     success: function (object) {
-        //     //         todoList.todos[index].title = object.title;
-        //     //         todoList.displayTodo()
-        //     //     }
-        //     // })
-
-
-
-        // }
-
-
         if (!text) {
             alert('type something')
             return;
         } else {
             todoList.changeTodo(dataIndex, text);
-            todoList.displayTodo();
         } //기존 li의 내용을, 위의 입력창에서 입력한 텍스트값으로 교체한다
-
-
     },
 
     clickCancelButton: function (item) {

@@ -2,6 +2,8 @@
 
 const todoList = {
 
+    todos: [],
+
     getData: function () {
         $.ajax({
             url: 'https://jsonplaceholder.typicode.com/todos?userId=1', //
@@ -16,7 +18,7 @@ const todoList = {
         })
     },
 
-    todos: [],
+
 
     addTodo: function (newTodoText) {
         //서버와의 통신이 성공했을때만 push가 되도록
@@ -49,7 +51,6 @@ const todoList = {
         //this.todos[index].todoText = newTodoText;
         let id = index;
 
-
         $.ajax({
             url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
             type: 'put',
@@ -62,26 +63,27 @@ const todoList = {
                 todoList.todos[id - 1].title = object.title;  // 객체는 없는 프로퍼티를 호출하면, 프로퍼티 자체를 만든다
                 //console.log(todoList.todos[id].todoText)
                 todoList.displayTodo();
+
             }
         })
 
     },
 
-    deleteTodo: function (index) {
-        //this.todos.splice(index, 1);
-
-        var id = index;
-
+    deleteTodo: function (id) {
         $.ajax({
             url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
             type: 'delete', //이미 여기까지의 명령으로 서버에서의 데이터는 삭제되었으므로, todos의 배열[해당인덱스]만 삭제해주면 된다 
             success: function () {
-                todoList.todos.splice(id - 1, 1);
+                todoList.todos.splice(todoList.todos.findIndex(({ id: todoID }) => todoID == id), 1);
                 todoList.displayTodo();
             }
         })
 
     },
+
+    //정확하게 삭제하는 방법은 id -1 이 아닌 현재 배열에서 해당 id를 가지고 있는 요소의 인덱스를 찾아서, 그 인덱스의 요소를 제거해주는 구조로 변경해야해욤
+
+
 
     completeTodo: function (index) {
         this.todos[index].completed = !this.todos[index].completed;
@@ -141,14 +143,28 @@ const todoList = {
         //클릭한 div 옆에 있는 체크박스 체크 해제
     },
 
+
+
     removeClick: function (icon) {
+
 
         // let selectedLi = icon.parentElement.parentElement;
         // selectedLi.parentElement.removeChild(selectedLi);
-        let selectedIndex = icon.parentElement.parentElement.dataset.index;
 
-        todoList.deleteTodo(selectedIndex);
 
+
+        let id = icon.parentElement.parentElement.dataset.index;
+        todoList.deleteTodo(id);
+
+
+        //let indexOfSelectedItem = todosArray.findIndex(findIndexofSelectedItem);
+        //console.log(indexOfSelectedItem);
+
+
+
+
+
+        //현재 배열에서 해당 id를 가지고 있는 요소의 인덱스를 찾아서, 그 인덱스의 요소를 제거해주는 구조로 변경해야해욤
 
     },
 

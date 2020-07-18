@@ -74,7 +74,12 @@ const todoList = {
             url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
             type: 'delete', //이미 여기까지의 명령으로 서버에서의 데이터는 삭제되었으므로, todos의 배열[해당인덱스]만 삭제해주면 된다 
             success: function () {
-                todoList.todos.splice(todoList.todos.findIndex(({ id: todoID }) => todoID == id), 1);
+
+                function todoIdCompare(todo) {
+                    return todo.id === id;
+                }
+
+                todoList.todos.splice(todoList.todos.findIndex(todoIdCompare(todo)), 1);
                 todoList.displayTodo();
             }
         })

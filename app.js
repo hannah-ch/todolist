@@ -1,62 +1,29 @@
-const $addButton = document.querySelector(".addButton");
-const $textinput = document.querySelector(".textinput");
-const $ul = document.querySelector("ul");
+const express = require('express');
+const fs = require('fs');
+const app = express();
+const port = 3000;
 
 
-//호출만 하는 파일의 경우 app.js라는 파일이름으로 암묵적으로 동의가 되어있음 
+app.use(express.static('public'))
 
-todoList.getData(); //비동기 방식
+app.get('/read', (req, res) => {
+    fs.readFile('todos.txt', 'utf8', (err, data) => {
+        res.send(data)
+    })
+})
 
-
-
-$addButton.addEventListener('click', () => {
-
-    //지금은 네트워크 통신없이 됐는데
-    //서버와의 통신이 성공했을때만 되도록 코드를 고쳐보자
-
-
-    if (!$textinput.value) {
-        alert('type something');
-    } else {
-
-
-
-
-        let text = $textinput.value;
-        todoList.addTodo(text);
-
-
-        $textinput.value = "";
-
+app.get('/write', (req, res) => {
+    const data = { //서버에서 받은 object 그대로 만들어줘야 list가 만들어지도록 설계되어있으므로, 포맷을 맞춰준다
+        userId: 1,
+        id: 100,
+        title: req.query.title,
+        completed: req.query.completed
     }
-});
+    fs.appendFile('todos.txt', JSON.stringify(data) + `\n`, () => {
+        res.send(data)
+    })
+})
 
-//ul에 이벤트 위임방식으로 switch 구문에 넣을 것
-// 함수 수정하고 함수를 만들 필요도 없다 
-
-
-$ul.addEventListener('click', (e) => {
-    switch (e.target.dataset.key) {
-        case "checkbox":
-            todoList.checkboxClick(e.target)
-            break;
-        case "contents":
-            todoList.contentClick(e.target)
-            break;
-        case "icon_trash":
-            todoList.removeClick(e.target);
-            break;
-        case "icon_edit":
-            todoList.editClick(e.target);
-            break;
-        case "submitButton":
-            todoList.clickSubmitButton(e.target);
-            break;
-        case "cancelButton":
-            todoList.clickCancelButton(e.target);
-            break;
-    }
-
-
-
+app.listen(3000, function () {
+    console.log('!!!')
 })

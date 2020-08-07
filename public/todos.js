@@ -22,28 +22,41 @@ const todoList = {
 
     addTodo: function (newTodoText) {
         //서버와의 통신이 성공했을때만 push가 되도록
-
         $.ajax({
-            url: 'https://jsonplaceholder.typicode.com/todos?userId=1', //
-            type: 'post',
-            data: {
-                title: newTodoText,
-                completed: false
-            },
-            success: function (object) {
+            url: `http://localhost:3000/write?title=${newTodoText}&completed=${false}`, //
+            type: 'get', //타입까ㅣㅈ 맞춰줄것
+            success: (object) => {
                 todoList.todos.push(object);
                 todoList.displayTodo();
-            }
+            },
+
+
+
         })
+
+        // $.ajax({
+        //     url: '/write', //
+        //     type: 'post',
+        //     data: JSON.stringify{
+        //     title: newTodoText,
+        //     completed: false
+        // },
+        //     success: (object) => {
+
+
+        //     }
+
+
+
     },
 
 
     /* 수정할 때는 
-   var id = //클릭한 요소의 아이디
-   삭제할 때 가져와봤던 아이디
-   수정을 할 때는 새로운 값을 서버에게 준다
-
-   이것도 똑같이 객체를 리턴하므로, 똑같이 배열에 넣어준다
+    var id = //클릭한 요소의 아이디
+    삭제할 때 가져와봤던 아이디
+    수정을 할 때는 새로운 값을 서버에게 준다
+    
+    이것도 똑같이 객체를 리턴하므로, 똑같이 배열에 넣어준다
     */
 
 

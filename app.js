@@ -1,29 +1,41 @@
-const express = require('express');
-const fs = require('fs');
-const app = express();
-const port = 3000;
+const express = require('express')
+const app = express()
+const port = 3000
+const fs = require("fs");
 
+app.use(express.urlencoded({ extended: false }))
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
-app.get('/read', (req, res) => {
-    fs.readFile('todos.txt', 'utf8', (err, data) => {
-        res.send(data)
-    })
+app.get('/', (req, res) => {
+  fs.readdir('./data',(err,list)=>{
+      res.send(list)
+  })
 })
 
-app.get('/write', (req, res) => {
-    const data = { //서버에서 받은 object 그대로 만들어줘야 list가 만들어지도록 설계되어있으므로, 포맷을 맞춰준다
-        userId: 1,
-        id: 100,
-        title: req.query.title,
-        completed: req.query.completed
-    }
-    fs.appendFile('todos.txt', JSON.stringify(data) + `\n`, () => {
-        res.send(data)
-    })
+app.get('/todo', (req, res) => {
+  fs.readdir('./data',(err,list)=>{
+      res.send(list)
+  })
 })
 
-app.listen(3000, function () {
-    console.log('!!!')
+app.post('/todo/write', (req, res)=>{
+  fs.readdir('./data',(err,list)=>{
+        fs.writeFile(`./data/${req.body.title}`, `[{title:${req.body.title}, completed:${req.body.completed}}]`,()=>{
+          res.redirect('/')
+        })
+      })
+})
+
+app.post('/todo/update', (req,res)=>{
+  fs.readFile(`./data/${req.body.title}`, `[{title:${req.body.title}, completed:${req.body.completed}}]`,()=>{
+    res.redirect('/')
+  })
+})
+
+
+
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
 })

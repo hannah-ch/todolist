@@ -6,10 +6,10 @@ const todoList = {
 
     getData: function () {
         $.ajax({
-            url: 'https://jsonplaceholder.typicode.com/todos?userId=1', //
+            url: 'http://localhost:3000/todo', //
             type: 'get',
             success: function (result) {
-                todoList.todos = result.splice(0, 5)
+                todoList.todos = result //.splice(0, 5)
                 todoList.displayTodo();  //동기 방식
             },
             error: function (result) { //주소를 잘못쳤거나, 서버와의 통신장애로 통신이 잘 안됐을때
@@ -22,41 +22,28 @@ const todoList = {
 
     addTodo: function (newTodoText) {
         //서버와의 통신이 성공했을때만 push가 되도록
+        let data = {
+            title: newTodoText,
+            completed: false
+        }
         $.ajax({
-            url: `http://localhost:3000/write?title=${newTodoText}&completed=${false}`, //
-            type: 'get', //타입까ㅣㅈ 맞춰줄것
-            success: (object) => {
+            url: 'http://localhost:3000/todo/write', //
+            type: 'post',
+            data: data,
+            success: function (object) {
                 todoList.todos.push(object);
                 todoList.displayTodo();
-            },
-
-
-
+            }
         })
-
-        // $.ajax({
-        //     url: '/write', //
-        //     type: 'post',
-        //     data: JSON.stringify{
-        //     title: newTodoText,
-        //     completed: false
-        // },
-        //     success: (object) => {
-
-
-        //     }
-
-
-
     },
 
 
     /* 수정할 때는 
-    var id = //클릭한 요소의 아이디
-    삭제할 때 가져와봤던 아이디
-    수정을 할 때는 새로운 값을 서버에게 준다
-    
-    이것도 똑같이 객체를 리턴하므로, 똑같이 배열에 넣어준다
+   var id = //클릭한 요소의 아이디
+   삭제할 때 가져와봤던 아이디
+   수정을 할 때는 새로운 값을 서버에게 준다
+
+   이것도 똑같이 객체를 리턴하므로, 똑같이 배열에 넣어준다
     */
 
 
@@ -65,8 +52,8 @@ const todoList = {
         let id = index;
 
         $.ajax({
-            url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
-            type: 'put',
+            url: `http://localhost:3000/todo/${id}`, //
+            type: 'post',
             data: {
                 id: id,
                 title: newTodoText
@@ -84,7 +71,7 @@ const todoList = {
 
     deleteTodo: function (id) {
         $.ajax({
-            url: `https://jsonplaceholder.typicode.com/todos/${id}`, //
+            url: `http://localhost:3000/todo/${id}`, //
             type: 'delete', //이미 여기까지의 명령으로 서버에서의 데이터는 삭제되었으므로, todos의 배열[해당인덱스]만 삭제해주면 된다 
             success: function () {
 
@@ -104,7 +91,7 @@ const todoList = {
 
 
     completeTodo: function (index) {
-        this.todos[index].completed = !this.todos[index].completed;
+        this.todo[index].completed = !this.todo[index].completed;
     },
 
 
@@ -112,13 +99,16 @@ const todoList = {
         $ul.innerHTML = "";
         let innerContents = '';
 
+        console.log(this.todos)
+        console.log()
+
         for (let i = 0; i < this.todos.length; i++) {
 
             let todo = this.todos[i];
             let className = 'completed'
             let checked = 'checked'
 
-            if (todo.completed === false) {
+            if (todo.completed === undefined) {
                 className = "";
                 checked = "";
             }
@@ -126,7 +116,7 @@ const todoList = {
             innerContents += `<li data-index="${todo.id}"><div class="checkboxDiv">
                              <input type="checkbox" class="checkbox" data-key="checkbox" ${checked}/></div>
                              <div class="contents ${className}" data-key="contents">
-                             ${todo.title}</div>
+                             ${todo}</div>
                              <div class="icondiv"><i class="far fa-edit" data-key="icon_edit"></i>
                              <i class="far fa-trash-alt" data-key="icon_trash"></i></div>
                              </li>`
@@ -193,9 +183,10 @@ const todoList = {
         //icon.previousElementSibling.children[1].innerText //기존 value를 저장
 
 
-        text.innerHTML = `<input type="text" id="textEdit" data-text=${originalText}>
-        <input type="button" value="submit" class="submitButton" data-key="submitButton">
-        <input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
+        text.innerHTML = `<form action="/update/" method="post">
+        <input type="text" id="textEdit" data-text=${originalText}>
+        <input type="submit" value="submit" class="submitButton" data-key="submitButton">
+        <input type="button" value="cancel" class="cancelButton" data-key="cancelButton"></form>` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
 
         //cancel버튼은 이제 배열이기 때문에 바로 eventlistener를 걸어준다
         //이벤트 위임이 아니면 추가됐을 때 코드를 붙여줘야한다 

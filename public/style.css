@@ -92,11 +92,12 @@ div.wrapper #textEdit {
   font-size:0.8rem;
 }
 
-
+input[type="submit"]:hover,
 input[type="button"]:hover{
   background-color: black;
 }
 
+input[type="submit"],
 input[type="button"] {
   background-color: #1103cc;
   padding: 10px 20px 10px 20px;

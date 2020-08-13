@@ -19,18 +19,18 @@ app.get('/todo', (req, res) => {
   })
 })
 
-app.post('/todo/write', (req, res)=>{
-  fs.readdir('./data',(err,list)=>{
-        fs.writeFile(`./data/${req.body.title}`, `[{title:${req.body.title}, completed:${req.body.completed}}]`,()=>{
-          res.redirect('/')
-        })
-      })
+app.get('/todo/write', (req, res)=>{
+    fs.writeFile(`./data/${req.query.id}`, req.query.title,()=>{
+      //res.redirect('/')
+      res.send('***')
+    })
 })
 
 app.post('/todo/update', (req,res)=>{
-  fs.readFile(`./data/${req.body.title}`, `[{title:${req.body.title}, completed:${req.body.completed}}]`,()=>{
+  console.log(req.body)
+  // fs.writeFile(`./data/${req.body.title}`, `[{title:${req.body.title}, completed:${req.body.completed}}]`,()=>{
     res.redirect('/')
-  })
+  // })
 })
 
 

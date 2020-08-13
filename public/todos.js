@@ -2,6 +2,8 @@
 
 const todoList = {
 
+    id : 0,
+
     todos: [],
 
     getData: function () {
@@ -21,18 +23,21 @@ const todoList = {
 
 
     addTodo: function (newTodoText) {
+        
         //서버와의 통신이 성공했을때만 push가 되도록
         let data = {
+            id: this.id,
             title: newTodoText,
             completed: false
         }
+        console.log(data)
         $.ajax({
-            url: 'http://localhost:3000/todo/write', //
-            type: 'post',
-            data: data,
+            url: `http://localhost:3000/todo/write?id=${data.id}&title=${data.title}`, //
+            type: 'get',
             success: function (object) {
                 todoList.todos.push(object);
                 todoList.displayTodo();
+                this.id++;
             }
         })
     },
@@ -52,7 +57,7 @@ const todoList = {
         let id = index;
 
         $.ajax({
-            url: `http://localhost:3000/todo/${id}`, //
+            url: `http://localhost:3000/todo/update/`, //이 주소일때만 업데이트 할것임 
             type: 'post',
             data: {
                 id: id,
@@ -182,11 +187,11 @@ const todoList = {
         let originalText = text.innerText;
         //icon.previousElementSibling.children[1].innerText //기존 value를 저장
 
-
-        text.innerHTML = `<form action="/update/" method="post">
+        
+        text.innerHTML = `
         <input type="text" id="textEdit" data-text=${originalText}>
         <input type="submit" value="submit" class="submitButton" data-key="submitButton">
-        <input type="button" value="cancel" class="cancelButton" data-key="cancelButton"></form>` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
+        <input type="button" value="cancel" class="cancelButton" data-key="cancelButton">` //li 내용을 입력하는 input 및 버튼 추가 (줄맞춤)
 
         //cancel버튼은 이제 배열이기 때문에 바로 eventlistener를 걸어준다
         //이벤트 위임이 아니면 추가됐을 때 코드를 붙여줘야한다 

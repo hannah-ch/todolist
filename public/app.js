@@ -18,10 +18,6 @@ $addButton.addEventListener('click', () => {
     if (!$textinput.value) {
         alert('type something');
     } else {
-
-
-
-
         let text = $textinput.value;
         todoList.addTodo(text);
 

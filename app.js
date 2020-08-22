@@ -1,39 +1,40 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const fs = require("fs");
+const db = require('./db.js');
 
 app.use(express.urlencoded({ extended: false }))
 
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  fs.readdir('./data',(err,list)=>{
-      res.send(list)
-  })
-})
-
 app.get('/todo', (req, res) => {
-  fs.readdir('./data',(err,list)=>{
-      res.send(list)
+  db.query(`SELECT * FROM todoData`,(err, rows)=>{
+    res.send(rows)
+  })   
+})
+
+app.post('/todo/write', (req, res)=>{
+    db.query(`INSERT INTO todoData (title) values('${req.body.title}')`, (err,rows)=>{
+      console.log(rows)
+      res.send({id:rows.insertId,
+                title:req.body.title,
+                completed:false
+              })
+    })  
+})
+
+app.get('/todo/completed', (req,res)=>{
+  db.query(`UPDATE todoData SET completed = ${req.query.completed} WHERE ID = ${req.query.id})`,(err, rows)=>{
+    res.sendStatus(200)
   })
 })
 
-app.get('/todo/write', (req, res)=>{
-    fs.writeFile(`./data/${req.query.id}`, req.query.title,()=>{
-      //res.redirect('/')
-      res.send('***')
-    })
+app.get('/todo/delete', (req,res)=>{
+  db.query(`DELETE FROM todoData WHERE ID = ${req.query.id}`,(err, rows)=>{
+    console.log(`req.query.id:`,req.query.id)
+    res.sendStatus(200);
+  })
 })
-
-app.post('/todo/update', (req,res)=>{
-  console.log(req.body)
-  // fs.writeFile(`./data/${req.body.title}`, `[{title:${req.body.title}, completed:${req.body.completed}}]`,()=>{
-    res.redirect('/')
-  // })
-})
-
-
 
 
 app.listen(port, () => {

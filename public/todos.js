@@ -1,5 +1,3 @@
-
-
 const todoList = {
 
     id : 0,
@@ -12,6 +10,7 @@ const todoList = {
             type: 'get',
             success: function (result) {
                 todoList.todos = result //.splice(0, 5)
+                console.log(result)
                 todoList.displayTodo();  //동기 방식
             },
             error: function (result) { //주소를 잘못쳤거나, 서버와의 통신장애로 통신이 잘 안됐을때
@@ -20,20 +19,14 @@ const todoList = {
         })
     },
 
-
-
     addTodo: function (newTodoText) {
-        
         //서버와의 통신이 성공했을때만 push가 되도록
-        let data = {
-            id: this.id,
-            title: newTodoText,
-            completed: false
-        }
-        console.log(data)
         $.ajax({
-            url: `http://localhost:3000/todo/write?id=${data.id}&title=${data.title}`, //
-            type: 'get',
+            url: `http://localhost:3000/todo/write`, //
+            type: 'post',
+            data: {
+                title: newTodoText,
+            },
             success: function (object) {
                 todoList.todos.push(object);
                 todoList.displayTodo();
@@ -75,16 +68,13 @@ const todoList = {
     },
 
     deleteTodo: function (id) {
+        console.log('id:',id)
         $.ajax({
-            url: `http://localhost:3000/todo/${id}`, //
-            type: 'delete', //이미 여기까지의 명령으로 서버에서의 데이터는 삭제되었으므로, todos의 배열[해당인덱스]만 삭제해주면 된다 
+            url: `http://localhost:3000/todo/delete`, //
+            type: 'get', //이미 여기까지의 명령으로 서버에서의 데이터는 삭제되었으므로, todos의 배열[해당인덱스]만 삭제해주면 된다 
+            data: { id: id },
             success: function () {
-
-                function todoIdCompare(todo) {
-                    return todo.id === id;
-                }
-
-                todoList.todos.splice(todoList.todos.findIndex(todoIdCompare(todo)), 1);
+                todoList.todos.splice(todoList.todos.findIndex(todo => todo.id === id), 1);
                 todoList.displayTodo();
             }
         })
@@ -96,7 +86,21 @@ const todoList = {
 
 
     completeTodo: function (index) {
-        this.todo[index].completed = !this.todo[index].completed;
+        let completed = todoList.todos[index].completed;
+        console.log(todoList.todos[index].completed);
+
+        $.ajax({
+            url:'http://localhost:3000/todo/completed',
+            type:'get',
+            data:{  id:index,
+                    completed: completed},
+            success: function(){
+                todoList.todos[index].completed = !completed;
+            }
+
+        })
+
+        
     },
 
 
@@ -109,16 +113,16 @@ const todoList = {
 
         for (let i = 0; i < this.todos.length; i++) {
 
-            let todo = this.todos[i];
-            let className = 'completed'
-            let checked = 'checked'
-
-            if (todo.completed === undefined) {
-                className = "";
-                checked = "";
+            let todo = this.todos[i].title;
+            let checked = '';
+            let className = '';
+            
+            if(this.todos[i].completed === 1){
+                checked = 'checked';
+                className = 'completed'
             }
 
-            innerContents += `<li data-index="${todo.id}"><div class="checkboxDiv">
+            innerContents += `<li data-index="${this.todos[i].id}"><div class="checkboxDiv">
                              <input type="checkbox" class="checkbox" data-key="checkbox" ${checked}/></div>
                              <div class="contents ${className}" data-key="contents">
                              ${todo}</div>
@@ -157,28 +161,12 @@ const todoList = {
     },
 
 
-
     removeClick: function (icon) {
-
-
-        // let selectedLi = icon.parentElement.parentElement;
-        // selectedLi.parentElement.removeChild(selectedLi);
-
-
-
         let id = icon.parentElement.parentElement.dataset.index;
         todoList.deleteTodo(id);
-
-
         //let indexOfSelectedItem = todosArray.findIndex(findIndexofSelectedItem);
         //console.log(indexOfSelectedItem);
-
-
-
-
-
         //현재 배열에서 해당 id를 가지고 있는 요소의 인덱스를 찾아서, 그 인덱스의 요소를 제거해주는 구조로 변경해야해욤
-
     },
 
     editClick: function (icon) {

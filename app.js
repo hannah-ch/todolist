@@ -24,18 +24,25 @@ app.post('/todo/write', (req, res)=>{
 })
 
 app.get('/todo/completed', (req,res)=>{
-  db.query(`UPDATE todoData SET completed = ${req.query.completed} WHERE ID = ${req.query.id})`,(err, rows)=>{
-    res.sendStatus(200)
+  db.query(`UPDATE todoData SET completed = ${req.query.completed} WHERE id = ${req.query.id})`,(err, rows)=>{
+    console.log(`UPDATE todoData SET completed = ${req.query.completed} WHERE id = ${req.query.id})`)
+    if (err) throw err;
+    res.redirect('/todo')
   })
 })
 
 app.get('/todo/delete', (req,res)=>{
   db.query(`DELETE FROM todoData WHERE ID = ${req.query.id}`,(err, rows)=>{
-    console.log(`req.query.id:`,req.query.id)
     res.sendStatus(200);
   })
 })
 
+app.get('/todo/update', (req, res)=>{
+  db.query(`UPDATE todoData SET title = '${req.query.title}' where id = ${req.query.id}`, (err,rows)=>{
+    if (err) throw err;
+    res.redirect('/todo')
+    })
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

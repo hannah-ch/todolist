@@ -24,21 +24,21 @@ app.post('/todo/write', (req, res)=>{
 })
 
 app.get('/todo/completed', (req,res)=>{
-  db.query(`UPDATE todoData SET completed = ${req.query.completed} WHERE id = ${req.query.id})`,(err, rows)=>{
-    console.log(`UPDATE todoData SET completed = ${req.query.completed} WHERE id = ${req.query.id})`)
+  db.query(`UPDATE todoData SET completed = ${req.query.completed} WHERE id = ${req.query.id}`,(err, rows)=>{
+    console.log(req.query.completed)
     if (err) throw err;
-    res.redirect('/todo')
+    res.redirect('/todo');
   })
 })
 
 app.get('/todo/delete', (req,res)=>{
   db.query(`DELETE FROM todoData WHERE ID = ${req.query.id}`,(err, rows)=>{
-    res.sendStatus(200);
+    res.redirect('/todo');
   })
 })
 
 app.get('/todo/update', (req, res)=>{
-  db.query(`UPDATE todoData SET title = '${req.query.title}' where id = ${req.query.id}`, (err,rows)=>{
+  db.query(`UPDATE todoData SET title = '${req.query.title}' WHERE ID = ${req.query.id}`, (err,rows)=>{
     if (err) throw err;
     res.redirect('/todo')
     })

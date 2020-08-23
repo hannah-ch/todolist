@@ -72,24 +72,24 @@ const todoList = {
         })
     },
 
-    //정확하게 삭제하는 방법은 id -1 이 아닌 현재 배열에서 해당 id를 가지고 있는 요소의 인덱스를 찾아서, 그 인덱스의 요소를 제거해주는 구조로 변경해야해욤
     completeTodo: function (index) {
        let checkedIndex = todoList.todos.findIndex(todo => todo.id == index);
        let completed = todoList.todos[checkedIndex].completed;
+       let completedVar = completed ? 0 : 1;
+       //console.log(completedVar)
         $.ajax({
             url:'http://localhost:3000/todo/completed',
             type:'get',
             data:{  id:index,
-                    completed: completed
+                    completed: completedVar
                 },
-            success: function(){
-                if(todoList.todos[checkedIndex].completed==0){
-                    completed=1}
-                    else{
-                        completed=0
-                    }
-                    ;
-                todoList.displayTodo();
+            success: function(object){
+                // if(todoList.todos[checkedIndex].completed === 1){
+                //     completedVar = 1
+                // } else {
+                //     completedVar = 0;
+                // }
+                //todoList.displayTodo();
             }
 
         })

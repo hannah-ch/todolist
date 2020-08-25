@@ -15,7 +15,6 @@ app.get('/todo', (req, res) => {
 
 app.post('/todo/write', (req, res)=>{
     db.query(`INSERT INTO todoData (title) values('${req.body.title}')`, (err,rows)=>{
-      console.log(rows)
       res.send({id:rows.insertId,
                 title:req.body.title,
                 completed:false
@@ -25,7 +24,7 @@ app.post('/todo/write', (req, res)=>{
 
 app.get('/todo/completed', (req,res)=>{
   db.query(`UPDATE todoData SET completed = ${req.query.completed} WHERE id = ${req.query.id}`,(err, rows)=>{
-    console.log(req.query.completed)
+    //console.log(req.query.completed)
     if (err) throw err;
     res.redirect('/todo');
   })

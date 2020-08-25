@@ -7,7 +7,6 @@ const todoList = {
             type: 'get',
             success: function (result) {
                 todoList.todos = result //.splice(0, 5)
-                console.log(result)
                 todoList.displayTodo();  //동기 방식
             },
             error: function (result) { //주소를 잘못쳤거나, 서버와의 통신장애로 통신이 잘 안됐을때
@@ -39,8 +38,6 @@ const todoList = {
     */
 
     changeTodo: function (index, newValue) {
-        //this.todos[index].todoText = newTodoText;
-        // console.log('findindex:', todoList.todos.findIndex(todo => todo.id === index))
         let foundIndex = todoList.todos.findIndex(todo=> todo.id == index);
         $.ajax({
             url: `http://localhost:3000/todo/update/`, //이 주소일때만 업데이트 할것임 
@@ -48,11 +45,8 @@ const todoList = {
             data: {
                 id: index,
                 title: newValue
-                //completed: false
             },
             success: function (object) {
-                //console.log('findindex:', todoList.todos.findIndex(todo=> todo.id == index))
-                //console.log('findindex:', todoList.todos.findIndex(todo => todo.title == newValue))
                 todoList.todos[foundIndex].title = object[foundIndex].title //객체는 없는 프로퍼티를 호출하면, 프로퍼티 자체를 만든다
                 todoList.displayTodo();
             }
@@ -60,7 +54,6 @@ const todoList = {
     },
 
     deleteTodo: function (id) {
-        //console.log('id:',id)
         $.ajax({
             url: `http://localhost:3000/todo/delete`, //
             type: 'get', //이미 여기까지의 명령으로 서버에서의 데이터는 삭제되었으므로, todos의 배열[해당인덱스]만 삭제해주면 된다 
@@ -128,7 +121,7 @@ const todoList = {
     },
 
     contentClick: function (content) {
-        let selectedIndex = content.parentElement.dataset.index;
+        let selectedIndex = parseInt(content.parentElement.dataset.index);
         content.classList.toggle('completed');
         let checkbox = content.previousElementSibling.firstElementChild;
         checkbox.checked = !checkbox.checked;
@@ -139,8 +132,6 @@ const todoList = {
     removeClick: function (icon) {
         let id = icon.parentElement.parentElement.dataset.index;
         todoList.deleteTodo(id);
-        //let indexOfSelectedItem = todosArray.findIndex(findIndexofSelectedItem);
-        //console.log(indexOfSelectedItem);
         //현재 배열에서 해당 id를 가지고 있는 요소의 인덱스를 찾아서, 그 인덱스의 요소를 제거해주는 구조로 변경해야해욤
     },
 

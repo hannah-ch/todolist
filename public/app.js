@@ -1,3 +1,5 @@
+import Todo from './Todo.js'
+
 const $addButton = document.querySelector(".addButton");
 const $textinput = document.querySelector(".textinput");
 const $ul = document.querySelector("ul");
@@ -5,8 +7,9 @@ const $ul = document.querySelector("ul");
 
 //호출만 하는 파일의 경우 app.js라는 파일이름으로 암묵적으로 동의가 되어있음 
 
-todoList.getData(); //비동기 방식
 
+
+todoList.getData(); //비동기 방식
 
 
 $addButton.addEventListener('click', () => {

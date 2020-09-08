@@ -15,9 +15,6 @@ class Todo{
         </li>`
     }
 
-
-
-
 }
 
 export default Todo;

@@ -1,11 +1,9 @@
 class CurrentDate{
-    
-    static now = new Date();
-    static months = ['January', 'Februay', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    static days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
     static getDate(){
-       return `${CurrentDate.now.getDate()} ${CurrentDate.months[now.getMonth()]}, ${CurrentDate.days[now.getDay()]}`;
+        const now = new Date();
+        const months = ['January', 'Februay', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        return `${now.getDate()} ${months[now.getMonth()]}, ${days[now.getDay()]}`;
     }
 }
 

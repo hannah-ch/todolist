@@ -1,10 +1,14 @@
-const $date = document.querySelector('.dateTag');
+class CurrentDate{
+    
+    static now = new Date();
+    static months = ['January', 'Februay', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    static days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-const now = new Date();
+    static getDate(){
+       return `${CurrentDate.now.getDate()} ${CurrentDate.months[now.getMonth()]}, ${CurrentDate.days[now.getDay()]}`;
+    }
+}
 
-const months = ['January', 'Februay', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+export default CurrentDate
 
-
-$date.innerText = `${now.getDate()} ${months[now.getMonth()]}, ${days[now.getDay()]}`;
 

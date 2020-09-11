@@ -8,8 +8,6 @@ const $wrapper = document.querySelector('.wrapper')
 
 $date.innerHTML = CurrentDate.getDate()
 
-
-
 const list = new List()
 Ajax.getData(list.listRender)
 
@@ -19,4 +17,5 @@ $wrapper.addEventListener('click', ({target})=>{
             Ajax.deleteData(target.dataset.id, list.listRender)
             break;
     }})
+
 

@@ -2,11 +2,11 @@ import Todo from './Todo.js'
 
 class List{
     constructor(){
+        this.$ul = document.querySelector("ul");
     }
 
-    listRender(results){
-        const ul = document.querySelector('ul')
-        ul.innerHTML = results.map(data => new Todo(data.id, data.title, data.completed)).map(todo => todo.todoRender()).join('')
+    listRender = (results) =>{
+        this.$ul.innerHTML = results.map(data => new Todo(data.id, data.title, data.completed)).map(todo => todo.todoRender()).join('')
     }
 }
 

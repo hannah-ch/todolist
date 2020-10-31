@@ -15,10 +15,15 @@ app.get('/todo', (req, res) => {
 
 app.post('/todo/write', (req, res)=>{
     db.query(`INSERT INTO todoData (title) values('${req.body.title}')`, (err,rows)=>{
+      console.log(`INSERT INTO todoData (title) values('${req.body.title}')`)
+      if (err) {
+        console.log(err);
+        throw err;
+      }
       res.send({id:rows.insertId,
                 title:req.body.title,
                 completed:false
-              })
+              });
     })  
 })
 
@@ -40,7 +45,7 @@ app.get('/todo/update', (req, res)=>{
   db.query(`UPDATE todoData SET title = '${req.query.title}' WHERE ID = ${req.query.id}`, (err,rows)=>{
     if (err) throw err;
     res.redirect('/todo')
-    })
+    });
 })
 
 app.listen(port, () => {

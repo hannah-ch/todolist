@@ -1,9 +1,10 @@
+const URL = 'http://3.8.120.144:3000'
 const todoList = {
     id : 0,
     todos: [],
     getData: function () {
         $.ajax({
-            url: 'http://localhost:3000/todo', //
+            url: `${URL}/todo`, //
             type: 'get',
             success: function (result) {
                 todoList.todos = result //.splice(0, 5)
@@ -17,7 +18,7 @@ const todoList = {
     addTodo: function (newTodoText) {
         //서버와의 통신이 성공했을때만 push가 되도록
         $.ajax({
-            url: `http://localhost:3000/todo/write`, //
+            url: `${URL}/todo/write`, //
             type: 'post',
             data: {
                 title: newTodoText,
@@ -71,7 +72,7 @@ const todoList = {
        let completedVar = completed ? 0 : 1;
        //console.log(completedVar)
         $.ajax({
-            url:'http://localhost:3000/todo/completed',
+            url:`${URL}/todo/completed`,
             type:'get',
             data:{  id:index,
                     completed: completedVar

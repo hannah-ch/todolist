@@ -52,6 +52,8 @@ $ul.addEventListener('click', (e) => {
         case "cancelButton":
             todoList.clickCancelButton(e.target);
             break;
+        default:
+            return;
     }
 
 

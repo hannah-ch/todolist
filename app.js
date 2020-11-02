@@ -1,11 +1,12 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const db = require('./db.js');
+const db = require('./db.js')
 
 app.use(express.urlencoded({ extended: false }))
+app.use(express.json());
 
-app.use(express.static('public'));
+app.use(express.static('public'))
 
 app.get('/todo', (req, res) => {
   db.query(`SELECT * FROM todoData`,(err, rows)=>{
@@ -15,7 +16,6 @@ app.get('/todo', (req, res) => {
 
 app.post('/todo/write', (req, res)=>{
     db.query(`INSERT INTO todoData (title) values('${req.body.title}')`, (err,rows)=>{
-      console.log(`INSERT INTO todoData (title) values('${req.body.title}')`)
       if (err) {
         console.log(err);
         throw err;

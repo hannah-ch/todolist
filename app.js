@@ -37,7 +37,7 @@ app.get('/todo/completed', (req,res)=>{
 
 app.get('/todo/delete', (req,res)=>{
   db.query(`DELETE FROM todoData WHERE ID = ${req.query.id}`,(err, rows)=>{
-    res.redirect('/todo');
+    res.send('success');
   })
 })
 

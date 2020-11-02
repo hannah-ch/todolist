@@ -8,10 +8,9 @@ class Ajax{
             .then(result => updateData(result))
     }
     
-    static deleteData(id, updateData){
-        fetch(`${Ajax.URL}/todo/delete?id=${id}`)
-        .then(res => res.json())
-        .then(result => updateData(result))
+    static deleteTodo(id){
+        return fetch(`${Ajax.URL}/todo/delete?id=${id}`)
+        .then(res => res.text())
     }
 
     static addTodo(newTodoText, addTodo){
@@ -26,6 +25,8 @@ class Ajax{
         .then(res => res.json())
         .then(result => addTodo(result))
     }
+
+    static completeTodo
 }
 
 export default Ajax

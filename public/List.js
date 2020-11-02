@@ -19,8 +19,13 @@ class List{
         this.listRender()
     }
 
+    deleteTodo(id){
+        const index = this.todos.findIndex(todo => todo.id === +id)
+        this.todos.splice(index,1)
+        this.listRender()   
+    }
+
     listRender(){
-        console.log(this.todos)
         const todoArray = this.todos.map(todo => todo.todoRender()).join('')
         this.$ul.innerHTML = todoArray
         //results.map(data => new Todo(data.id, data.title, data.completed)).map(todo => todo.todoRender()).join('')

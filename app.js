@@ -27,11 +27,10 @@ app.post('/todo/write', (req, res)=>{
     })  
 })
 
-app.get('/todo/completed', (req,res)=>{
-  db.query(`UPDATE todoData SET completed = ${req.query.completed} WHERE id = ${req.query.id}`,(err, rows)=>{
-    //console.log(req.query.completed)
+app.put('/todo/completed', (req,res)=>{
+  db.query(`UPDATE todoData SET completed = ${req.body.completed} WHERE id = ${req.body.id}`,(err, rows)=>{
     if (err) throw err;
-    res.redirect('/todo');
+    res.send('success');
   })
 })
 
@@ -41,10 +40,11 @@ app.get('/todo/delete', (req,res)=>{
   })
 })
 
-app.get('/todo/update', (req, res)=>{
-  db.query(`UPDATE todoData SET title = '${req.query.title}' WHERE ID = ${req.query.id}`, (err,rows)=>{
+app.put('/todo/update', (req, res)=>{
+  db.query(`UPDATE todoData SET title = '${req.body.title}' WHERE ID = ${req.body.id}`, (err,rows)=>{
+    console.log(`UPDATE todoData SET title = '${req.body.title}' WHERE ID = ${req.body.id}`)
     if (err) throw err;
-    res.redirect('/todo')
+    res.send('success');
     });
 })
 

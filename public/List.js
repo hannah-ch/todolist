@@ -55,7 +55,6 @@ class List{
     listRender(){
         const todoArray = this.todos.map(todo => todo.todoRender()).join('')
         this.$ul.innerHTML = todoArray
-        //results.map(data => new Todo(data.id, data.title, data.completed)).map(todo => todo.todoRender()).join('')
     }
 }
 
